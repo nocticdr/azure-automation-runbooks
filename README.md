@@ -1,4 +1,4 @@
-### Azure Automation for cost saving
+# Azure Automation for cost saving
 Powershell runbooks for Azure automation
 
 Original script by Farouk Friha. 
