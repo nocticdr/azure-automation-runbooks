@@ -19,7 +19,9 @@ MON_SUN_2000 (Check and stop the resource every day at 8PM - this is useful if s
 ## Additional Information
 
 ### Parallel
-In addition to the above, the script will start or stop the resources in parallel and not consecutively. 
+In addition to the above, the script will start or stop the resources in parallel and not consecutively. This ensures that resources are available quickly at a specific time. If there are resources which have a dependency on each other, you will need to add specific schedules for the script to start your resources accordingly. 
+
+E.g. A database server could have a tag of MON_FRI_0800 for it to turn on at 08:00AM and an dependent application server could have a tag of MON_FRI_0830 for it to turn on at 08:30AM. Same logic applies when shutting down resources.
 
 ### Background Job
 Very often there are issues with Azure taking longer than usual to start or stop VMs. This causes the script to run for a longer time, consuming a lot of job minutes. Because of this, I've added an -AsJob parameter when starting or stopping the resources so as to run the task as a background job. 
@@ -28,3 +30,4 @@ Cons: You do not have confirmation within the job's output that resources has st
 
 
 
+@nocticdr|2020
