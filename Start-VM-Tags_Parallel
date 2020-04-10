@@ -1,10 +1,11 @@
-Workflow Stop_VMs_Tags_Parallel
+Workflow Start_VMs_Tags_Parallel
 {
     param (
         [Parameter(Mandatory=$true)]
-        [String] $Stop_Schedule_TagValue
+        [String] $Start_Schedule_TagValue
     ) 
-    $Action = "stop"
+    $Action = "start"
+    #$TagName = ""
     ## Authentication
     Write-Output ""
     Write-Output "------------------------ Authentication ------------------------"
@@ -12,7 +13,6 @@ Workflow Stop_VMs_Tags_Parallel
 
     try
     {
-
         $Conn = Get-AutomationConnection -Name AzureRunAsConnection
         
         $null = Connect-AzureRMAccount `
@@ -46,9 +46,9 @@ Workflow Stop_VMs_Tags_Parallel
 
     try
     {
-        if ($Stop_Schedule_TagValue)
+        if ($Start_Schedule_TagValue)
         {                    
-            $instances = Get-AzureRMResource -TagValue $Stop_Schedule_TagValue -ResourceType "Microsoft.Compute/virtualMachines"
+            $instances = Get-AzureRMResource -TagValue $Start_Schedule_TagValue -ResourceType "Microsoft.Compute/virtualMachines"
             
             if ($instances)
             {
