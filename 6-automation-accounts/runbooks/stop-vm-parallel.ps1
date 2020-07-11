@@ -1,4 +1,4 @@
-Workflow Stop_VMs_Tags_Parallel
+Workflow stop-vm-parallel.ps1
 {
     param (
         [Parameter(Mandatory=$true)]

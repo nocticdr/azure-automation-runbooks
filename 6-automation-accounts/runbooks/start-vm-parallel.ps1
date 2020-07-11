@@ -1,4 +1,4 @@
-Workflow Start_VMs_Tags_Parallel
+Workflow start-vm-parallel.ps1
 {
     param (
         [Parameter(Mandatory=$true)]
