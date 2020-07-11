@@ -43,7 +43,7 @@ resource "azurerm_automation_account" "automation_nprod" {
 # Creates the runbook based on script above
 # Runbook name needs to be exactly as workflow name in the script
 data "local_file" "module_update" {
-  filename                       = "../6-runbooks/Update-AutomationAzureModulesForAccount.ps1"
+  filename                       = "../runbooks/Update-AutomationAzureModulesForAccount.ps1"
 }
 resource "azurerm_automation_runbook" "module_update" {
   name                           = "rb-update-modules"
@@ -61,7 +61,7 @@ resource "azurerm_automation_runbook" "module_update" {
 # Creates the runbook based on script above
 # Runbook name needs to be exactly as workflow name in the script
 data "local_file" "start_vm" {
-  filename                       = "../6-runbooks/start-vm-parallel.ps1"
+  filename                       = "../runbooks/start-vm-parallel.ps1"
 }
 resource "azurerm_automation_runbook" "start_vm" {
   name                           = "rb-start-vm" #TODO: Change to rb-vm-start-stop
@@ -79,7 +79,7 @@ resource "azurerm_automation_runbook" "start_vm" {
 # Creates the runbook based on script above
 # Runbook name needs to be exactly as workflow name in the script
 data "local_file" "stop_vm" {
-  filename                       = "../6-runbooks/stop-vm-parallel.ps1"
+  filename                       = "../runbooks/stop-vm-parallel.ps1"
 }
 resource "azurerm_automation_runbook" "stop_vm" {
   name                           = "rb-stop-vm" #TODO: Change to rb-vm-start-stop
@@ -95,7 +95,7 @@ resource "azurerm_automation_runbook" "stop_vm" {
 
 # Creates a schedule
 resource "azurerm_automation_schedule" "schedule_0800" {
-  name                    = "MON_FRI_0800" #TODO: Change all tags in dev vm to MON_FRI_0900 then update here. Change to lowercase
+  name                    = "MON_FRI_0800"
   resource_group_name     = "rg-ea-auto-nprod"
   automation_account_name = azurerm_automation_account.automation_nprod.name
   frequency               = "Week"
