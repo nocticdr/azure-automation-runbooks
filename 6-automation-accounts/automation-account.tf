@@ -42,7 +42,6 @@ resource "azurerm_automation_account" "automation_nprod" {
 # Source the powershell script
 # Creates the runbook based on script above
 # Runbook name needs to be exactly as workflow name in the script
-# TODO: Add AzureRM.Network module
 data "local_file" "module_update" {
   filename                       = "../6-runbooks/Update-AutomationAzureModulesForAccount.ps1"
 }
