@@ -1,9 +1,8 @@
 # Azure Automation for cost saving
 Powershell runbooks for Azure automation
 
-Credit to Farouk Friha for the original script.
+Credit to Farouk Friha for the [original script](https://gallery.technet.microsoft.com/scriptcenter/Stop-Start-all-or-only-8a7e11a2).
 
-https://gallery.technet.microsoft.com/scriptcenter/Stop-Start-all-or-only-8a7e11a2
 
 The original script combines both start-stop actions in one script. I split both into two separate files so as not to confuse the users of the script. I end up with one file which starts resources and another one which stops them, based on tags, in parallel.
 
