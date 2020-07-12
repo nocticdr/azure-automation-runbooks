@@ -12,7 +12,7 @@ terraform {
     resource_group_name  = "rg-name"
     storage_account_name = "statefiles"
     container_name       = "container-name"
-    key                  = "remote-resource-group.tfstate"
+    key                  = "remote-state-resource-group.tfstate"
   }
 }
 
