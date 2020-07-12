@@ -9,7 +9,7 @@ provider "azurerm" {
 terraform {
   backend "azurerm" {
     subscription_id      = "xxxxx-xxxxx-xxxxx-xxxxx"
-    resource_group_name  = "rg-tf-state"
+    resource_group_name  = "rg-name"
     storage_account_name = "statefiles"
     container_name       = "container-name"
     key                  = "remote-resource-group.tfstate"
