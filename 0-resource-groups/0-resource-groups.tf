@@ -5,6 +5,14 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  REGION = "eastasia"
+
+  # Subscriptions used
+  SUBSCRIPTION = "xxxxx-xxxxx-xxxxx-xxxxxxx"
+}
+
+
 # Store the TF state file on Azure Blobstorage as a remote backend
 terraform {
   backend "azurerm" {
@@ -20,7 +28,7 @@ variable "resourcegroup_names" {
   description = "List of Resource Groups to create"
   default = [
     "rg-ea-1",
-    "rg-ea-2",
+    "rg-ea-public-ips",
     "rg-ea-3"
  
   ]
