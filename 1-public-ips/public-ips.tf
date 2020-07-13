@@ -43,7 +43,7 @@ resource "azurerm_management_lock" "resource_lock_fw" {
   notes      = "This IP is locked to prevent accidental deletion"
 }
 
-# Create a second public IP for Azure Firewall
+# Create a second public IP 
 resource "azurerm_public_ip" "pip_azure_2" {
   name                = local.FIREWALL_IP_2_NAME
   location            = local.REGION
