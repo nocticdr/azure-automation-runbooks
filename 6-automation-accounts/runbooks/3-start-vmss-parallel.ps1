@@ -10,7 +10,7 @@ workflow rb-start-vmss
         $TagValue 
 
     ) 
-    
+
     ## Authentication
     Write-Output ""
     Write-Output "------------------------ Authentication ------------------------"
@@ -41,6 +41,14 @@ workflow rb-start-vmss
             throw $_.Exception
         }
     }
+    ## End of authentication
+
+    ## Getting all virtual machines
+    Write-Output ""
+    Write-Output ""
+    Write-Output "---------------------------- Status ----------------------------"
+    Write-Output "Getting all VMSS from all resource groups ..."
+
 
 
     try
