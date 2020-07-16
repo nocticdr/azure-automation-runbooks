@@ -11,6 +11,11 @@ workflow rb-start-vmss
 
     ) 
     
+    ## Authentication
+    Write-Output ""
+    Write-Output "------------------------ Authentication ------------------------"
+    Write-Output "Logging into Azure ..."
+    
     try
     {
         $Conn = Get-AutomationConnection -Name AzureRunAsConnection

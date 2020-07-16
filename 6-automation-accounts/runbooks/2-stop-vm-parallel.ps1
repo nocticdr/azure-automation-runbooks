@@ -1,6 +1,7 @@
 Workflow stop-vm-parallel.ps1
 {
-    param (
+    param 
+    (
         [Parameter(Mandatory=$true)]
         [String] $Stop_Schedule_TagValue
     ) 
