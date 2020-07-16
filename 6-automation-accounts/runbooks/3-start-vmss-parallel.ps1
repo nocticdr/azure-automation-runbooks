@@ -1,4 +1,4 @@
-workflow rb-start-vmss
+workflow 3-start-vmss-parallel
 { 
     param 
     (    
@@ -8,7 +8,6 @@ workflow rb-start-vmss
         [Parameter(Mandatory=$true)] 
         [String] 
         $TagValue 
-
     ) 
 
     ## Authentication
@@ -48,8 +47,6 @@ workflow rb-start-vmss
     Write-Output ""
     Write-Output "---------------------------- Status ----------------------------"
     Write-Output "Getting all VMSS from all resource groups ..."
-
-
 
     try
     {

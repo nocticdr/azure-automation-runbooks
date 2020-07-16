@@ -1,4 +1,4 @@
-Workflow stop-vm-parallel.ps1
+Workflow stop-vm-parallel
 {
     param 
     (
