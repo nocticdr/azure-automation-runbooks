@@ -55,6 +55,9 @@ workflow rb-start-vmss
     {
 		if($Action -eq "Start" -and $TagValue -eq "MON_FRI_0845")
 		{ 
+            Write-Output "--------------------------- Updating ---------------------------"
+            Write-Output "Trying to stop virtual machines ..."
+    
 			foreach ($rgname in (Get-AzureRmVmss | ? {$_.Tags["StartSchedule"] -eq "MON_FRI_0845"}))
 			{ 
                 Write-Output "Starting '$($rgname)' resource group"; 
