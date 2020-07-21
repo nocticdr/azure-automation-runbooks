@@ -1,4 +1,4 @@
-workflow 3-start-vmss-parallel
+workflow rb-start-vmss
 { 
     param 
     (    

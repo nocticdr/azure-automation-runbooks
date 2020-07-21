@@ -1,4 +1,4 @@
-Workflow stop-vm-parallel
+Workflow rb-start-vm
 {
     param 
     (
