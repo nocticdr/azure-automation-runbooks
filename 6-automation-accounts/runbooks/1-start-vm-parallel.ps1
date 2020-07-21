@@ -1,4 +1,4 @@
-Workflow 1-start-vm-parallel
+Workflow rb-start-vm
 {
     param (
         [Parameter(Mandatory=$true)]
