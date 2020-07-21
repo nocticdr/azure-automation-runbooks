@@ -27,10 +27,10 @@ terraform {
 # REF: Open Issue https://github.com/terraform-providers/terraform-provider-azurerm/issues/4431
 # Make sure to comment out everything else from line 32, then create RunAsAccount.
 
-resource "azurerm_automation_account" "automation_nprod" {
-  name                   = "automation-nprod"
+resource "azurerm_automation_account" "automation" {
+  name                   = "automation"
   location               = local.REGION
-  resource_group_name    = "rg-ea-auto-nprod"
+  resource_group_name    = "rg-automation"
 
   sku_name               = "Basic"
 
@@ -48,8 +48,8 @@ data "local_file" "module_update" {
 resource "azurerm_automation_runbook" "module_update" {
   name                           = "rb-update-modules"
   location                       = local.REGION
-  resource_group_name            = "rg-ea-auto-nprod"
-  automation_account_name        = azurerm_automation_account.automation_nprod.name
+  resource_group_name            = "rg-automation"
+  automation_account_name        = azurerm_automation_account.automation.name
   log_verbose                    = "true"
   log_progress                   = "true"
   description                    = "This is used to update all automation account modules"
@@ -61,13 +61,13 @@ resource "azurerm_automation_runbook" "module_update" {
 # Creates the runbook based on script above
 # Runbook name needs to be exactly as workflow name in the script
 data "local_file" "start_vm" {
-  filename                       = "../runbooks/start-vm-parallel.ps1"
+  filename                       = "../runbooks/1-start-vm-parallel.ps1"
 }
 resource "azurerm_automation_runbook" "start_vm" {
   name                           = "rb-start-vm" #TODO: Change to rb-vm-start-stop
   location                       = local.REGION
-  resource_group_name            = "rg-ea-auto-nprod"
-  automation_account_name        = azurerm_automation_account.automation_nprod.name
+  resource_group_name            = "rg-automation"
+  automation_account_name        = azurerm_automation_account.automation.name
   log_verbose                    = "true"
   log_progress                   = "true"
   description                    = "This runbook starts vm in parallel based on a tag value"
@@ -79,13 +79,13 @@ resource "azurerm_automation_runbook" "start_vm" {
 # Creates the runbook based on script above
 # Runbook name needs to be exactly as workflow name in the script
 data "local_file" "stop_vm" {
-  filename                       = "../runbooks/stop-vm-parallel.ps1"
+  filename                       = "../runbooks/2-stop-vm-parallel.ps1"
 }
 resource "azurerm_automation_runbook" "stop_vm" {
   name                           = "rb-stop-vm" #TODO: Change to rb-vm-start-stop
   location                       = local.REGION
-  resource_group_name            = "rg-ea-auto-nprod"
-  automation_account_name        = azurerm_automation_account.automation_nprod.name
+  resource_group_name            = "rg-automation"
+  automation_account_name        = azurerm_automation_account.automation.name
   log_verbose                    = "true"
   log_progress                   = "true"
   description                    = "This runbook stops vm in parallel based on a tag value"
@@ -93,11 +93,42 @@ resource "azurerm_automation_runbook" "stop_vm" {
   content                        = data.local_file.stop_vm.content
 }
 
+data "local_file" "start_vmss" {
+  filename                       = "../runbooks/3-start-vmss-parallel.ps1"
+}
+resource "azurerm_automation_runbook" "start_vmss" {
+  name                           = "rb-start-vmss" #TODO: Change to rb-vmss-start-stop
+  location                       = local.REGION
+  resource_group_name            = "rg-automation"
+  automation_account_name        = azurerm_automation_account.automation.name
+  log_verbose                    = "true"
+  log_progress                   = "true"
+  description                    = "This runbook starts vmss in parallel based on a tag value"
+  runbook_type                   = "PowerShellWorkflow"
+  content                        = data.local_file.start_vmss.content
+}
+
+data "local_file" "stop_vmss" {
+  filename                       = "../runbooks/3-start-vmss-parallel.ps1"
+}
+resource "azurerm_automation_runbook" "stop_vmss" {
+  name                           = "rb-stop-vmss" #TODO: Change to rb-vmss-start-stop
+  location                       = local.REGION
+  resource_group_name            = "rg-automation"
+  automation_account_name        = azurerm_automation_account.automation.name
+  log_verbose                    = "true"
+  log_progress                   = "true"
+  description                    = "This runbook stops vmss in parallel based on a tag value"
+  runbook_type                   = "PowerShellWorkflow"
+  content                        = data.local_file.stop_vmss.content
+}
+
+
 # Creates a schedule
 resource "azurerm_automation_schedule" "schedule_0800" {
   name                    = "MON_FRI_0800"
-  resource_group_name     = "rg-ea-auto-nprod"
-  automation_account_name = azurerm_automation_account.automation_nprod.name
+  resource_group_name     = "rg-automation"
+  automation_account_name = azurerm_automation_account.automation.name
   frequency               = "Week"
   interval                = 1
   week_days               = ["Monday","Tuesday","Wednesday","Thursday","Friday"]
@@ -109,8 +140,8 @@ resource "azurerm_automation_schedule" "schedule_0800" {
 # Creates a schedule
 resource "azurerm_automation_schedule" "schedule_2000" {
   name                    = "MON_SUN_2000" #TODO: Change to lowercase
-  resource_group_name     = "rg-ea-auto-nprod"
-  automation_account_name = azurerm_automation_account.automation_nprod.name
+  resource_group_name     = "rg-automation"
+  automation_account_name = azurerm_automation_account.automation.name
   frequency               = "Day"
   interval                = 1
   timezone                = "China Standard Time" # https://support.microsoft.com/en-us/help/973627/microsoft-time-zone-index-values
@@ -120,8 +151,8 @@ resource "azurerm_automation_schedule" "schedule_2000" {
 
 # Create start vm job to run MON to FRI at 8.45AM
 resource "azurerm_automation_job_schedule" "start_vm" {
-  resource_group_name     = "rg-ea-auto-nprod"
-  automation_account_name = azurerm_automation_account.automation_nprod.name
+  resource_group_name     = "rg-automation"
+  automation_account_name = azurerm_automation_account.automation.name
   schedule_name           = "MON_FRI_0800"
   runbook_name            = "rb-start-vm"
   
@@ -133,8 +164,8 @@ resource "azurerm_automation_job_schedule" "start_vm" {
 
 # Create stop vm job to run MON to SUN at 8pm
 resource "azurerm_automation_job_schedule" "stop_vm" {
-  resource_group_name     = "rg-ea-auto-nprod"
-  automation_account_name = azurerm_automation_account.automation_nprod.name
+  resource_group_name     = "rg-automation"
+  automation_account_name = azurerm_automation_account.automation.name
   schedule_name           = "MON_SUN_2000"
   runbook_name            = "rb-stop-vm"
   
@@ -146,8 +177,8 @@ resource "azurerm_automation_job_schedule" "stop_vm" {
 
 # Create start agw job to run MON to FRI at 8.45AM
 resource "azurerm_automation_job_schedule" "start_agw" {
-  resource_group_name     = "rg-ea-auto-nprod"
-  automation_account_name = azurerm_automation_account.automation_nprod.name
+  resource_group_name     = "rg-automation"
+  automation_account_name = azurerm_automation_account.automation.name
   schedule_name           = "MON_FRI_0800"
   runbook_name            = "rb-start-agw"
 
@@ -158,8 +189,8 @@ resource "azurerm_automation_job_schedule" "start_agw" {
 
 # Create stop agw job to run MON to SUN at 8pm
 resource "azurerm_automation_job_schedule" "stop_agw" {
-  resource_group_name     = "rg-ea-auto-nprod"
-  automation_account_name = azurerm_automation_account.automation_nprod.name
+  resource_group_name     = "rg-automation"
+  automation_account_name = azurerm_automation_account.automation.name
   schedule_name           = "MON_SUN_2000"
   runbook_name            = "rb-stop-agw"
 
